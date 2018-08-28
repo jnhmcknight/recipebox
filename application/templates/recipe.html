@@ -1,0 +1,32 @@
+<html>
+<head>
+    <title>{{recipe['title']}}</title>
+</head>
+<body>
+    <h1>{{recipe['title']}}</h1>
+
+    <h3>Ingredients</h3>
+
+    {% if recipe.get('image'): %}
+        <div style="float: right"><img src="{{recipe.get('image')}}" alt="preview image of {{recipe['title']}}"/></div>
+    {% endif %}
+
+    <ul>
+        {% for ingredient in recipe['ingredients'].split('\n'): %}
+            <li>{{ingredient}}</li>
+        {% endfor %}
+    </ul>
+
+    <h3>Instructions</h3>
+    <ul>
+        {% for instruction in recipe['instructions'].split('\n'): %}
+            <li>{{instruction}}</li>
+        {% endfor %}
+    </ul>
+
+    {% if recipe.get('creation_date'): %}
+        <div>Added to my collection: {{recipe['creation_date']}}</div>
+    {% endif %}
+    <div>Source: {{recipe['source']|hostname_link|safe}}</div>
+</body>
+</html>

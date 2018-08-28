@@ -1,0 +1,31 @@
+<html>
+    <head>
+        <title>My Recipes</title>
+        <style>
+IMG {
+    max-width: 300px;
+    max-height: 300px;
+}
+        </style>
+    </head>
+    <body>
+        <table>
+            <tr>
+                <th>Title</th>
+                <th>Source</th>
+                <th>Image</th>
+            </tr>
+            {% for recipe in recipes.keys()|sorted: %}
+                <tr>
+                    <td><a href="{{url_for('recipe', id=recipe)}}">{{recipes[recipe]['title']}}</a></td>
+                    <td>{{recipes[recipe].get('source', '')|hostname_link|safe}}</td>
+                    {% if recipes[recipe].get('image'): %}
+                        <td><img src="{{recipes[recipe].get('image')}}" alt="preview image of {{recipe}}"/></td>
+                    {% else: %}
+                        <td></td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+        </table>
+    </body>
+</html>

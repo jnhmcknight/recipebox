@@ -1,0 +1,16 @@
+<html>
+<body>
+<table>
+<tr>
+    <th>Category Name</th>
+    <th>View Recipes</th>
+</tr>
+{% for category in categories: %}
+<tr>
+    <td>{{category['ZCATEGORYNAME']}}: {{category['ZCATEGORYITEM']}}</td>
+    <td><a href="{{url_for('category', id=category['CATEGORY_ID'])}}">Show</a></td>
+</tr>
+{% endfor %}
+</table>
+</body>
+</html>
