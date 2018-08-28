@@ -36,7 +36,6 @@ def index():
 @app.route("/recipe/<string:id>")
 def recipe(id):
     single = recipes.single(id)
-    print(single)
     return render_template('recipe.html', recipe=single)
 
 

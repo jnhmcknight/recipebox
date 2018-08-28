@@ -1,17 +1,26 @@
 <html>
     <head>
         <title>Recipe Categories</title>
+        <style>
+.category {
+     padding-left: 10px;
+     padding-right: 10px;
+}
+        </style>
     </head>
     <body>
+        <h1>Categories</h1>
+        <a href="{{url_for('index')}}">All Recipes</a><br/><br/>
         <table>
             <tr>
-                <th>Category Name</th>
-                <th>View Recipes</th>
+                <th>Name</th>
+                <th></th>
             </tr>
             {% for category in categories.keys()|sorted: %}
                 <tr>
-                    <td>{{category}}: {{categories[category]|count}} recipes</td>
-                    <td><a href="{{url_for('category', id=category)}}">Show</a></td>
+                    <td class="category">{{category}}</td>
+                    <td><a href="{{url_for('category', id=category)}}">
+                        View {{categories[category]|count}} recipes</a></td>
                 </tr>
             {% endfor %}
         </table>

@@ -34,11 +34,13 @@
             {% endif %}
             <em>Source:</em><br/>
             {{recipe['source']|hostname_link|safe}}
-            <br/><br/>
-            <em>Categories:</em><br/>
-            {% for category in recipe['categories']|sorted: %}
-                <a href="{{url_for('category', id=category)}}">{{category}}</a><br/>
-            {% endfor %}
+            {% if recipe.get('categories'): %}
+                <br/><br/>
+                <em>Categories:</em><br/>
+                {% for category in recipe['categories']|sorted: %}
+                    <a href="{{url_for('category', id=category)}}">{{category}}</a><br/>
+                {% endfor %}
+            {% endif %}
         </div>
 
         <ul>
