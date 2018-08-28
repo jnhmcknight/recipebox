@@ -5,6 +5,7 @@ import base64
 import boto3
 import hashlib
 import json
+import os
 import sys
 
 # pylint: disable=wildcard-import
@@ -15,10 +16,6 @@ import objc
 
 s3 = boto3.resource('s3')
 S3_BUCKET = 'not-your-grandmas-recipe-box'
-
-special = {
-    'browseThumbnail': 'image'
-}
 
 translated = {
     'creationDate': 'creation_date',
@@ -42,6 +39,7 @@ def nskeyedarchive_to_nsdict(plist_name):
         sys.exit(1)
 
     recipes = {}
+    categories = {}
     if nsdict:
 
         # read SFLListItem "items" in order and return as list of nsdicts
@@ -59,20 +57,33 @@ def nskeyedarchive_to_nsdict(plist_name):
 
             key = 'browseThumbnail'
             if key in data and data[key]:
-                print('Uploading image for: {}'.format(item.encode('utf-8')))
                 name = hashlib.sha1(item.encode('utf-8')).hexdigest()
-                body = base64.b64encode(pythonCollectionFromPropertyList(data[key]['imageData']))
-                s3.Object(S3_BUCKET, 'images/{}'.format(name)).put(
-                    Body=base64.b64decode(body),
-                    ACL='public-read')
+                if not os.environ.get('SKIP_IMAGE_UPLOAD'):
+                    print('Uploading image for: {}'.format(item.encode('utf-8')))
+                    body = base64.b64encode(pythonCollectionFromPropertyList(data[key]['imageData']))
+                    s3.Object(S3_BUCKET, 'images/{}'.format(name)).put(
+                        Body=base64.b64decode(body),
+                        ACL='public-read')
                 attributes.update({'image': 'https://{}.s3.amazonaws.com/images/{}'.format(S3_BUCKET, name)})
+
+            key = 'categories'
+            if key in data and data[key]:
+                cats = set()
+                for category in data[key]:
+                    name = category['RBCategoryObjectName']
+                    if name not in categories:
+                        categories.update({name: []})
+                    cats.add(name)
+                    categories[name].append(item)
+
+                attributes.update({'categories': list(cats)})
 
             recipes.update({item: attributes})
     else:
         print("[ERROR] Failed to unarchive %s. Check input name." % plist_name)
         sys.exit(1)
 
-    return recipes
+    return {'recipes': recipes, 'categories': categories}
 
 
 def parse_arguments():
