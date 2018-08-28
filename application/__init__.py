@@ -37,17 +37,20 @@ def index():
 def recipe(id):
     single = recipes.single(id)
     print(single)
-    return render_template('recipe.html', recipe=single, categories=[])
+    return render_template('recipe.html', recipe=single)
 
 
 @app.route("/cat")
 def categories():
-    return render_template('categories.html', categories=[])
+    return render_template('categories.html', categories=recipes.categories())
 
 
 @app.route("/cat/<string:id>")
 def category(id):
-    return render_template('recipes.html', recipes=recipes.in_category(id))
+    subset = {}
+    for recipe in recipes.in_category(id):
+        subset.update({recipe: recipes.single(recipe)})
+    return render_template('recipes.html', recipes=subset)
 
 
 @app.route("/search")

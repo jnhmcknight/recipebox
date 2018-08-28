@@ -20,7 +20,7 @@
         <h3>Ingredients</h3>
 
         <div class="meta-info">
-            <a href="{{url_for('index')}}">Back to recipe list</a>
+            <a href="javascript:history.back();">Back to previous</a>
             {% if recipe.get('image'): %}
                 <br/><br/>
                 <img src="{{recipe.get('image')}}" alt="preview image of {{recipe['title']}}"/>
@@ -34,6 +34,11 @@
             {% endif %}
             <em>Source:</em><br/>
             {{recipe['source']|hostname_link|safe}}
+            <br/><br/>
+            <em>Categories:</em><br/>
+            {% for category in recipe['categories']|sorted: %}
+                <a href="{{url_for('category', id=category)}}">{{category}}</a><br/>
+            {% endfor %}
         </div>
 
         <ul>
