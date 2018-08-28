@@ -1,32 +1,52 @@
 <html>
-<head>
-    <title>{{recipe['title']}}</title>
-</head>
-<body>
-    <h1>{{recipe['title']}}</h1>
+    <head>
+        <title>{{recipe['title']}}</title>
+        <style>
+.meta-info {
+    float: right;
+    text-align: right;
+    margin-left: 15px;
+    margin-bottom: 15px;
+    border-left: 1px dotted #000000;
+    border-bottom: 1px dotted #000000;
+    padding-left: 10px;
+    padding-bottom: 10px;
+}
+        </style>
+    </head>
+    <body>
+        <h1>{{recipe['title']}}</h1>
 
-    <h3>Ingredients</h3>
+        <h3>Ingredients</h3>
 
-    {% if recipe.get('image'): %}
-        <div style="float: right"><img src="{{recipe.get('image')}}" alt="preview image of {{recipe['title']}}"/></div>
-    {% endif %}
+        <div class="meta-info">
+            <a href="{{url_for('index')}}">Back to recipe list</a>
+            {% if recipe.get('image'): %}
+                <br/><br/>
+                <img src="{{recipe.get('image')}}" alt="preview image of {{recipe['title']}}"/>
+            {% endif %}
 
-    <ul>
-        {% for ingredient in recipe['ingredients'].split('\n'): %}
-            <li>{{ingredient}}</li>
-        {% endfor %}
-    </ul>
+            <br/><br/>
+            {% if recipe.get('creation_date'): %}
+                <em>Added to my collection:</em><br/>
+                {{recipe['creation_date']}}
+                <br/><br/>
+            {% endif %}
+            <em>Source:</em><br/>
+            {{recipe['source']|hostname_link|safe}}
+        </div>
 
-    <h3>Instructions</h3>
-    <ul>
-        {% for instruction in recipe['instructions'].split('\n'): %}
-            <li>{{instruction}}</li>
-        {% endfor %}
-    </ul>
+        <ul>
+            {% for ingredient in recipe['ingredients'].split('\n'): %}
+                <li>{{ingredient}}</li>
+            {% endfor %}
+        </ul>
 
-    {% if recipe.get('creation_date'): %}
-        <div>Added to my collection: {{recipe['creation_date']}}</div>
-    {% endif %}
-    <div>Source: {{recipe['source']|hostname_link|safe}}</div>
-</body>
+        <h3>Instructions</h3>
+        <ul>
+            {% for instruction in recipe['instructions'].split('\n'): %}
+                <li>{{instruction}}</li>
+            {% endfor %}
+        </ul>
+    </body>
 </html>
