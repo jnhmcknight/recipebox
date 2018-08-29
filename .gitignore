@@ -1,0 +1,5 @@
+venv
+*.pyc
+zappa_settings.json
+recipe-box-conversion.json
+*.rbox
