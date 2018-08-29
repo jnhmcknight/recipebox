@@ -54,9 +54,12 @@ def nskeyedarchive_to_nsdict(plist_name):
             for attr in data['attributeDictionary']:
                 if attr not in translated:
                     continue
-                attributes.update({
-                    translated[attr]: unicode(data['attributeDictionary'][attr])
-                })
+
+                value = unicode(data['attributeDictionary'][attr]).strip()
+                if attr == 'title':
+                    value = value.title()
+
+                attributes.update({translated[attr]: value})
 
             key = 'browseThumbnail'
             if key in data and data[key]:
