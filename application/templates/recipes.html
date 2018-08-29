@@ -1,6 +1,6 @@
 <html>
     <head>
-        <title>My Recipes</title>
+        <title>{{title}}</title>
         <style>
 IMG {
     max-width: 300px;
@@ -19,9 +19,8 @@ IMG {
         </style>
     </head>
     <body>
-        <h1>My Recipes</h1>
-        <a href="{{url_for('categories')}}">Categories</a> |
-        <a href="{{url_for('index')}}">All Recipes</a><br/><br/>
+        <h1>{{title}}</h1>
+        {% include "includes/nav.html" %}
         {% for recipe in recipes.keys()|sorted: %}
             <div class="recipe-card">
                 <a href="{{url_for('recipe', id=recipe)}}">

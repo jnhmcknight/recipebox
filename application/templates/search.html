@@ -1,0 +1,28 @@
+<html>
+    <head>
+        <title>Search Recipes</title>
+        <style>
+LABEL {
+    display: block;
+    clear: left;
+}
+        </style>
+    </head>
+    <body>
+        <h1>Search</h1>
+        {% include "includes/nav.html" %}
+        <form action="{{url_for('perform_search')}}" method="post">
+            <fieldset>
+                <label for="term">Search for:</label>
+                <input type="text" name="term"/>
+            </fieldset>
+            <fieldset>
+                <label for="type">Search type:</label>
+                <input type="radio" name="type" value="ingredient" checked="checked"/> Ingredients Only<br/>
+                <input type="radio" name="type" value="instruction"/> Instructions Only<br/>
+                <input type="radio" name="type" value="name"/> Recipe Name<br/>
+            </fieldset>
+            <input type="submit" value="Submit"/>
+        </form>
+    </body>
+</html>
