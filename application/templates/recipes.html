@@ -1,37 +1,19 @@
 <html>
     <head>
         <title>{{title}}</title>
-        <style>
-IMG {
-    max-width: 300px;
-    max-height: 300px;
-    text-align: center;
-    border: 0px;
-}
-
-.recipe-card {
-    width: 320px;
-    height: 300px;
-    text-align: center;
-    float: left;
-    margin-bottom: 15px;
-    border: 1px dotted #000000;
-    padding-top: 5px;
-    margin-left: 5px;
-    margin-right: 5px;
-}
-        </style>
+        {% include "includes/head.html" %}
     </head>
     <body>
         <h1>{{title}}</h1>
         {% include "includes/nav.html" %}
         {% for recipe in recipes.keys()|sorted: %}
             <div class="recipe-card">
-                <a href="{{url_for('recipe', id=recipe)}}">
+                <a href="{{url_for('recipe', id=recipe)}}" class="title">{{recipes[recipe]['title']}}</a>
                 {% if recipes[recipe].get('image'): %}
-                    <img src="{{recipes[recipe].get('image')}}"/><br/>
+                    <a href="{{url_for('recipe', id=recipe)}}">
+                        <img src="{{recipes[recipe].get('image')}}"/>
+                    </a>
                 {% endif %}
-                <strong>{{recipes[recipe]['title']}}</strong></a><br/>
             </div>
         {% endfor %}
     </body>

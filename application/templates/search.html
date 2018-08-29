@@ -1,12 +1,7 @@
 <html>
     <head>
         <title>Search Recipes</title>
-        <style>
-LABEL {
-    display: block;
-    clear: left;
-}
-        </style>
+        {% include "includes/head.html" %}
     </head>
     <body>
         <h1>Search</h1>
@@ -14,7 +9,7 @@ LABEL {
         <form action="{{url_for('perform_search')}}" method="post">
             <fieldset>
                 <label for="term">Search for:</label>
-                <input type="text" name="term"/>
+                <input type="text" name="term" class="large-font"/>
             </fieldset>
             <fieldset>
                 <label for="type">Search type:</label>
@@ -22,7 +17,7 @@ LABEL {
                 <input type="radio" name="type" value="instruction"/> Instructions Only<br/>
                 <input type="radio" name="type" value="name"/> Recipe Name<br/>
             </fieldset>
-            <input type="submit" value="Submit"/>
+            <input type="submit" value="Submit" class="large-font"/>
         </form>
     </body>
 </html>
