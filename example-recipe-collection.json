@@ -1,0 +1,55 @@
+{
+    "recipes": {
+        "recipe name 1": {
+            "rating": "0", 
+            "source": "http://domain.tld/path/to/original/recipe.html", 
+            "title": "Recipe Title 1", 
+            "image": "https://some.domain.tld/path/to/recipe/image", 
+            "ingredients": "1 Ingredient #1\n1/2 Other Ingredient\nEtc...",
+            "creation_date": "2015-09-18 13:26:13 +0000", 
+            "instructions": "Some instructions that are joined by \n so that they will appear correctly in order for display purposes."
+        },
+        "recipe name 2": {
+            "rating": "0", 
+            "source": "http://domain.tld/path/to/original/recipe.html", 
+            "title": "Recipe Title 2", 
+            "image": "https://some.domain.tld/path/to/recipe/image", 
+            "ingredients": "1 Ingredient #1\n1/2 Other Ingredient\nEtc...",
+            "creation_date": "2015-09-18 13:26:13 +0000", 
+            "instructions": "Some instructions that are joined by \n so that they will appear correctly in order for display purposes."
+        },
+        "recipe name 3": {
+            "rating": "0", 
+            "source": "http://domain.tld/path/to/original/recipe.html", 
+            "title": "Recipe Title 3", 
+            "image": "https://some.domain.tld/path/to/recipe/image", 
+            "ingredients": "1 Ingredient #1\n1/2 Other Ingredient\nEtc...",
+            "creation_date": "2015-09-18 13:26:13 +0000", 
+            "instructions": "Some instructions that are joined by \n so that they will appear correctly in order for display purposes."
+        },
+        "recipe name 4": {
+            "rating": "0", 
+            "source": "http://domain.tld/path/to/original/recipe.html", 
+            "title": "Recipe Title 4", 
+            "image": "https://some.domain.tld/path/to/recipe/image", 
+            "ingredients": "1 Ingredient #1\n1/2 Other Ingredient\nEtc...",
+            "creation_date": "2015-09-18 13:26:13 +0000", 
+            "instructions": "Some instructions that are joined by \n so that they will appear correctly in order for display purposes."
+        }
+    }, 
+    "categories": {
+        "category name 1": [
+            "recipe name 1",
+            "recipe name 2"
+        ], 
+        "category name 2": [
+            "recipe name 3"
+        ], 
+        "category name 3": [
+            "recipe name 2", 
+            "recipe name 3"
+        ], 
+        "category name 4": [
+        ]
+    }
+}
