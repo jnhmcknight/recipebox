@@ -1,0 +1,59 @@
+
+BODY {
+    font-family: Verdana, Arial, Sans Serif;
+    margin: 20px;
+}
+
+.recipe-card IMG {
+    max-width: 300px;
+    max-height: 300px;
+    text-align: center;
+    border: 0px;
+}
+
+.recipe-card {
+    max-width: 315px;
+    height: 300px;
+    text-align: center;
+    float: left;
+    margin-bottom: 15px;
+    border: 1px dotted #000000;
+    padding: 5px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.recipe-card .title {
+    height: 50px;
+    max-width: 300px;
+    display: block;
+    clear: both;
+    vertical-align: bottom;
+    font-variant: small-caps;
+    margin-bottom: 10px;
+}
+
+.meta-info {
+    float: right;
+    text-align: right;
+    margin-left: 15px;
+    margin-bottom: 15px;
+    border-left: 1px dotted #000000;
+    border-bottom: 1px dotted #000000;
+    padding-left: 10px;
+    padding-bottom: 10px;
+}
+
+.category {
+     padding-left: 10px;
+     padding-right: 10px;
+}
+
+LABEL {
+    display: block;
+    clear: left;
+}
+
+.large-font {
+    font-size: large;
+}
