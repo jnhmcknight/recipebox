@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        {% block head %}
+            <title>{{title}} - Recipe Box</title>
+            {% include 'includes/head.html' %}
+        {% endblock %}
+    </head>
+    <body>
+        <h1>{{title}}</h1>
+        {% include 'includes/nav.html' %}
+        {% block body %}{% endblock %}
+    </body>
+</html>

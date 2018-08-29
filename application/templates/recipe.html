@@ -1,49 +1,42 @@
-<html>
-    <head>
-        <title>{{recipe['title']}}</title>
-        {% include "includes/head.html" %}
-    </head>
-    <body>
-        <h1>{{recipe['title']}}</h1>
-        {% include "includes/nav.html" %}
+{% set title = recipe['title'] %}
+{% extends 'layouts/base.html' %}
+{% block body %}
+    <h3>Ingredients</h3>
 
-        <h3>Ingredients</h3>
-
-        <div class="meta-info">
-            <a href="javascript:history.back();">Back to previous</a>
-            {% if recipe.get('image'): %}
-                <br/><br/>
-                <img src="{{recipe.get('image')}}" alt="preview image of {{recipe['title']}}"/>
-            {% endif %}
-
+    <div class="meta-info">
+        <a href="javascript:history.back();">Back to previous</a>
+        {% if recipe.get('image'): %}
             <br/><br/>
-            {% if recipe.get('creation_date'): %}
-                <em>Added to my collection:</em><br/>
-                {{recipe['creation_date']}}
-                <br/><br/>
-            {% endif %}
-            <em>Source:</em><br/>
-            {{recipe['source']|hostname_link|safe}}
-            {% if recipe.get('categories'): %}
-                <br/><br/>
-                <em>Categories:</em><br/>
-                {% for category in recipe['categories']|sorted: %}
-                    <a href="{{url_for('category', id=category)}}">{{category}}</a><br/>
-                {% endfor %}
-            {% endif %}
-        </div>
+            <img src="{{recipe.get('image')}}" alt="preview image of {{recipe['title']}}"/>
+        {% endif %}
 
-        <ul>
-            {% for ingredient in recipe['ingredients'].split('\n'): %}
-                <li>{{ingredient}}</li>
+        <br/><br/>
+        {% if recipe.get('creation_date'): %}
+            <em>Added to my collection:</em><br/>
+            {{recipe['creation_date']}}
+            <br/><br/>
+        {% endif %}
+        <em>Source:</em><br/>
+        {{recipe['source']|hostname_link|safe}}
+        {% if recipe.get('categories'): %}
+            <br/><br/>
+            <em>Categories:</em><br/>
+            {% for category in recipe['categories']|sorted: %}
+                <a href="{{url_for('category', id=category)}}">{{category}}</a><br/>
             {% endfor %}
-        </ul>
+        {% endif %}
+    </div>
 
-        <h3>Instructions</h3>
-        <ul>
-            {% for instruction in recipe['instructions'].split('\n'): %}
-                <li>{{instruction}}</li>
-            {% endfor %}
-        </ul>
-    </body>
-</html>
+    <ul>
+        {% for ingredient in recipe['ingredients'].split('\n'): %}
+            <li>{{ingredient}}</li>
+        {% endfor %}
+    </ul>
+
+    <h3>Instructions</h3>
+    <ul>
+        {% for instruction in recipe['instructions'].split('\n'): %}
+            <li>{{instruction}}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

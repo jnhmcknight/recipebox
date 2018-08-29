@@ -1,23 +1,13 @@
-<html>
-    <head>
-        <title>Recipe Categories</title>
-        {% include "includes/head.html" %}
-    </head>
-    <body>
-        <h1>Categories</h1>
-        {% include "includes/nav.html" %}
-        <table>
+{% set title = 'Categories' %}
+{% extends 'layouts/base.html' %}
+{% block body %}
+    <table>
+        {% for category in categories.keys()|sorted: %}
             <tr>
-                <th>Name</th>
-                <th></th>
+                <td class="category">{{category}}</td>
+                <td><a href="{{url_for('category', id=category)}}">
+                    View {{categories[category]|count}} recipes</a></td>
             </tr>
-            {% for category in categories.keys()|sorted: %}
-                <tr>
-                    <td class="category">{{category}}</td>
-                    <td><a href="{{url_for('category', id=category)}}">
-                        View {{categories[category]|count}} recipes</a></td>
-                </tr>
-            {% endfor %}
-        </table>
-    </body>
-</html>
+        {% endfor %}
+    </table>
+{% endblock %}

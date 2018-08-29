@@ -1,20 +1,13 @@
-<html>
-    <head>
-        <title>{{title}}</title>
-        {% include "includes/head.html" %}
-    </head>
-    <body>
-        <h1>{{title}}</h1>
-        {% include "includes/nav.html" %}
-        {% for recipe in recipes.keys()|sorted: %}
-            <div class="recipe-card">
-                <a href="{{url_for('recipe', id=recipe)}}" class="title">{{recipes[recipe]['title']}}</a>
-                {% if recipes[recipe].get('image'): %}
-                    <a href="{{url_for('recipe', id=recipe)}}">
-                        <img src="{{recipes[recipe].get('image')}}"/>
-                    </a>
-                {% endif %}
-            </div>
-        {% endfor %}
-    </body>
-</html>
+{% extends 'layouts/base.html' %}
+{% block body %}
+    {% for recipe in recipes.keys()|sorted: %}
+        <div class="recipe-card">
+            <a href="{{url_for('recipe', id=recipe)}}" class="title">{{recipes[recipe]['title']}}</a>
+            {% if recipes[recipe].get('image'): %}
+                <a href="{{url_for('recipe', id=recipe)}}">
+                    <img src="{{recipes[recipe].get('image')}}"/>
+                </a>
+            {% endif %}
+        </div>
+    {% endfor %}
+{% endblock %}
