@@ -1,8 +1,14 @@
-"""Convert a recipe box shared plist file to usable json"""
+"""
+Convert a recipe box shared plist file to usable json
+
+This is a heavily modified version of https://github.com/whyallyn/unarchive-plist
+
+"""
 
 import argparse
 import base64
 import boto3
+import botocore
 import hashlib
 import json
 import os
@@ -14,9 +20,6 @@ import unidecode
 from Foundation import *
 from PyObjCTools.Conversion import pythonCollectionFromPropertyList
 import objc
-
-s3 = boto3.resource('s3')
-S3_BUCKET = 'not-your-grandmas-recipe-box'
 
 translated = {
     'creationDate': 'creation_date',
@@ -30,8 +33,13 @@ translated = {
     'totalTime': 'total_time'
 }
 
-def nskeyedarchive_to_nsdict(plist_name):
-    """Convert a NSKeyedArchive to a serializable NSDictionary."""
+def nskeyedarchive_to_json(plist_name, s3_bucket=None):
+    """Convert a NSKeyedArchive to a JSON data file."""
+
+    s3 = None
+    if s3_bucket:
+        s3 = boto3.resource('s3')
+
     try:
         # unarchive plist into a nsdict
         nsdict = NSKeyedUnarchiver.unarchiveObjectWithFile_(plist_name)
@@ -43,9 +51,6 @@ def nskeyedarchive_to_nsdict(plist_name):
     categories = {}
     if nsdict:
 
-        # read SFLListItem "items" in order and return as list of nsdicts
-        #for item in sorted(nsdict["items"], key=lambda k: k.order()):
-        #    items.append(sfllistitem_to_nsdict(item))
         for item in nsdict["setOfRecipes"]:
             recipe_hash = hashlib.sha1(item.encode('utf-8')).hexdigest()
             recipe_id = unidecode.unidecode(item).lower()
@@ -63,13 +68,17 @@ def nskeyedarchive_to_nsdict(plist_name):
 
             key = 'browseThumbnail'
             if key in data and data[key]:
-                if not os.environ.get('SKIP_IMAGE_UPLOAD'):
-                    print('Uploading image for: {}'.format(recipe_id))
+                try:
                     body = base64.b64encode(pythonCollectionFromPropertyList(data[key]['imageData']))
-                    s3.Object(S3_BUCKET, 'images/{}'.format(recipe_hash)).put(
+                    s3.Object(s3_bucket, 'images/{}'.format(recipe_hash)).put(
                         Body=base64.b64decode(body),
                         ACL='public-read')
-                attributes.update({'image': 'https://{}.s3.amazonaws.com/images/{}'.format(S3_BUCKET, recipe_hash)})
+                    print('Uploaded image for: {}'.format(recipe_id))
+                except botocore.exceptions.NoCredentialsError:
+                    pass
+
+                if s3_bucket:
+                    attributes.update({'image': 'https://{}.s3.amazonaws.com/images/{}'.format(s3_bucket, recipe_hash)})
 
             key = 'categories'
             if key in data and data[key]:
@@ -100,19 +109,25 @@ def parse_arguments():
         "--read",
         dest="plist_in",
         required=True,
-        help="Property List (plist or sfl) file to convert.")
+        help="rbox file exported from The Recipe Box (iOS app).")
     parser.add_argument(
         "-w",
         "--write",
         dest="plist_out",
-        help="Filename to write the new serialized plist.")
+        help="Filename to write the JSON data.")
+    parser.add_argument(
+        "-s",
+        "--s3",
+        dest="s3_bucket",
+        default=None,
+        help="S3 Bucket to upload image files.")
     return parser.parse_args()
 
 
 def main():
     """Main function."""
     args = parse_arguments()
-    recipes = nskeyedarchive_to_nsdict(args.plist_in)
+    recipes = nskeyedarchive_to_json(args.plist_in, args.s3_bucket)
     if not args.plist_out:
         print(json.dumps(recipes, indent=4))
     else:
