@@ -1,0 +1,12 @@
+{
+    "dev": {
+        "app_function": "application.app", 
+        "project_name": "recipebox", 
+        "runtime": "python2.7", 
+        "exclude": ["unarchiving"],
+        "environment_variables": {
+            "S3_BUCKET": "my-bucket-name",
+            "S3_KEY": "path/to/json/data/file"
+        }
+    }
+}
