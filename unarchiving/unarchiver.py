@@ -48,7 +48,7 @@ def nskeyedarchive_to_nsdict(plist_name):
         #    items.append(sfllistitem_to_nsdict(item))
         for item in nsdict["setOfRecipes"]:
             recipe_hash = hashlib.sha1(item.encode('utf-8')).hexdigest()
-            recipe_id = unidecode.unidecode(item)
+            recipe_id = unidecode.unidecode(item).lower()
             data = nsdict["setOfRecipes"][item]
             attributes = {}
             for attr in data['attributeDictionary']:
