@@ -7,6 +7,7 @@ import hashlib
 import json
 import os
 import sys
+import unidecode
 
 # pylint: disable=wildcard-import
 # pylint: disable=unused-wildcard-import
@@ -46,6 +47,8 @@ def nskeyedarchive_to_nsdict(plist_name):
         #for item in sorted(nsdict["items"], key=lambda k: k.order()):
         #    items.append(sfllistitem_to_nsdict(item))
         for item in nsdict["setOfRecipes"]:
+            recipe_hash = hashlib.sha1(item.encode('utf-8')).hexdigest()
+            recipe_id = unidecode.unidecode(item)
             data = nsdict["setOfRecipes"][item]
             attributes = {}
             for attr in data['attributeDictionary']:
@@ -57,14 +60,13 @@ def nskeyedarchive_to_nsdict(plist_name):
 
             key = 'browseThumbnail'
             if key in data and data[key]:
-                name = hashlib.sha1(item.encode('utf-8')).hexdigest()
                 if not os.environ.get('SKIP_IMAGE_UPLOAD'):
-                    print('Uploading image for: {}'.format(item.encode('utf-8')))
+                    print('Uploading image for: {}'.format(recipe_id))
                     body = base64.b64encode(pythonCollectionFromPropertyList(data[key]['imageData']))
-                    s3.Object(S3_BUCKET, 'images/{}'.format(name)).put(
+                    s3.Object(S3_BUCKET, 'images/{}'.format(recipe_hash)).put(
                         Body=base64.b64decode(body),
                         ACL='public-read')
-                attributes.update({'image': 'https://{}.s3.amazonaws.com/images/{}'.format(S3_BUCKET, name)})
+                attributes.update({'image': 'https://{}.s3.amazonaws.com/images/{}'.format(S3_BUCKET, recipe_hash)})
 
             key = 'categories'
             if key in data and data[key]:
@@ -74,11 +76,11 @@ def nskeyedarchive_to_nsdict(plist_name):
                     if name not in categories:
                         categories.update({name: []})
                     cats.add(name)
-                    categories[name].append(item)
+                    categories[name].append(recipe_id)
 
                 attributes.update({'categories': list(cats)})
 
-            recipes.update({item: attributes})
+            recipes.update({recipe_id: attributes})
     else:
         print("[ERROR] Failed to unarchive %s. Check input name." % plist_name)
         sys.exit(1)

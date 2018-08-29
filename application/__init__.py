@@ -82,7 +82,7 @@ def perform_search():
                     recipelist.update({recipe: allrecipes[recipe]})
                     break
 
-        elif term in recipe.encode('utf-8').lower():
+        elif term in allrecipes[recipe].get('title').encode('utf-8').lower():
             recipelist.update({recipe: allrecipes[recipe]})
 
     title = 'Found {} Recipes for "{}" in {}s'.format(len(recipelist.keys()), term, search_type)
